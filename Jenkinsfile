@@ -6,7 +6,7 @@ pipeline {
             steps {
                 echo 'Building..'
                 sh 'npm install'
-                
+                sh 'npm run dev'
             }
 	    post {
 		success {
@@ -32,7 +32,6 @@ pipeline {
             steps {
                 echo 'Testing..'
 		sh 'npm run test'
-		
             }
 	   post {
 		success {
@@ -40,14 +39,14 @@ pipeline {
 		        body: "${currentBuild.currentResult} in job ${env.JOB_NAME} build ${env.BUILD_NUMBER}",
 		        recipientProviders: [developers(), requestor()],
 		        to: 'klaaudia.baran@gmail.com',
-		        subject: "JENKINS successful build"
+		        subject: "JENKINS successful test"
 		}
 		failure {
 		    emailext attachLog: true,
 		        body: "${currentBuild.currentResult} in job ${env.JOB_NAME} build ${env.BUILD_NUMBER}",
 		        recipientProviders: [developers(), requestor()],
 		        to: 'klaaudia.baran@gmail.com',
-		        subject: "JENKINS build failed"
+		        subject: "JENKINS test failed"
 		}
 		
 	    }
