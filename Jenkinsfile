@@ -6,7 +6,6 @@ pipeline {
             steps {
                 echo 'Building..'
                 sh 'npm install'
-                sh 'npm run dev'
             }
 	    post {
 		success {
