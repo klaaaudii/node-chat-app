@@ -50,6 +50,31 @@ pipeline {
 		
 	    }
 	}
+
+
+	 stage('Deploy') {
+            steps {
+                echo 'Deploying..'
+		sh 'docker build -t chat-deploy -f Dockerfile-deploy .'
+            }
+	   post {
+		success {
+		    emailext attachLog: true,
+		        body: "${currentBuild.currentResult} in job ${env.JOB_NAME} build ${env.BUILD_NUMBER}",
+		        recipientProviders: [developers(), requestor()],
+		        to: 'klaaudia.baran@gmail.com',
+		        subject: "JENKINS successful deploy"
+		}
+		failure {
+		    emailext attachLog: true,
+		        body: "${currentBuild.currentResult} in job ${env.JOB_NAME} build ${env.BUILD_NUMBER}",
+		        recipientProviders: [developers(), requestor()],
+		        to: 'klaaudia.baran@gmail.com',
+		        subject: "JENKINS deploy failed"
+		}
+		
+	    }
+	}
      }        
  }
     
